@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RoomItem : MonoBehaviour
 {
-    [SerializeField] private TMP_Text _roomName;
+    public TMP_Text roomName;
     private LobbyManager _manager;
 
     private void Start()
@@ -13,11 +13,11 @@ public class RoomItem : MonoBehaviour
 
     public void SetRoomName(string RoomName)
     {
-        _roomName.text = RoomName;
+        roomName.text = RoomName;
     }
 
     public void OnClickItem()
     {
-        _manager.JoinRoom(_roomName.text);
+        _manager.JoinRoom(roomName.text);
     }
 }
