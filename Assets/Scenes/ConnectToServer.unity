@@ -663,7 +663,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 1208187741}
         m_TargetAssemblyTypeName: ConnectToServer, Assembly-CSharp
-        m_MethodName: OnClickConnect
+        m_MethodName: ConnectedToServer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -845,6 +845,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _usernameInput: {fileID: 291887734}
   _buttonText: {fileID: 1676479438}
+  OnSuccessEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  OnFailureEvent:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!4 &1208187742
 Transform:
   m_ObjectHideFlags: 0

@@ -1,23 +1,10 @@
 using System;
 using UnityEngine;
+using System.Collections;
 
 public class CarControls : MonoBehaviour
 {
-
-    public Rigidbody sphereRB;
-
-    private void Start()
-    {
-        throw new NotImplementedException();
-    }
-
-    private void Update()
-    {
-        transform.position = sphereRB.transform.position;
-    }
-
-
-    /*private const string HORIZONTAL = "Horizontal";
+    private const string HORIZONTAL = "Horizontal";
     private const string VERTICAL = "Vertical";
 
     private float _horizontalInput;
@@ -41,6 +28,8 @@ public class CarControls : MonoBehaviour
     [SerializeField] private float _motorForce;
     [SerializeField] private float _breakForce;
     [SerializeField] private float _maxSteerAngle;
+
+    internal float _currentSpeed;
     
     private void FixedUpdate()
     {
@@ -48,7 +37,15 @@ public class CarControls : MonoBehaviour
         HandlerMotor();
         HandleSteering();
         UpdateWheels();
+        UpdateSpeed();
     }
+
+    private void UpdateSpeed()
+    {
+        Vector3 localVelocity = transform.InverseTransformDirection(GetComponent<Rigidbody>().velocity);
+        _currentSpeed = Mathf.Abs(localVelocity.z) * 3.6f;
+    }
+
     private void GetInput()
     {
         _horizontalInput = Input.GetAxis(HORIZONTAL);
@@ -60,11 +57,17 @@ public class CarControls : MonoBehaviour
     {
         _frontLeftWheelCollider.motorTorque = _verticalInput * _motorForce;
         _frontRightWheelCollider.motorTorque = _verticalInput * _motorForce;
-        _currentBreakForce = _breakForce = _isBreaking ? _breakForce : 0f;
+        
+        _currentBreakForce = _isBreaking ? _breakForce : 0f;
 
         if (_isBreaking)
         {
             ApplyBreaking();
+        }
+        
+        else if (!_isBreaking)
+        {
+            StopBreaking();
         }
     }
 
@@ -74,6 +77,14 @@ public class CarControls : MonoBehaviour
         _frontRightWheelCollider.brakeTorque = _currentBreakForce;
         _backLeftWheelCollider.brakeTorque = _currentBreakForce;
         _backRightWheelCollider.brakeTorque = _currentBreakForce;
+    }
+    
+    private void StopBreaking()
+    {
+        _frontLeftWheelCollider.brakeTorque = 0f;
+        _frontRightWheelCollider.brakeTorque = 0f;
+        _backLeftWheelCollider.brakeTorque = 0f;
+        _backRightWheelCollider.brakeTorque = 0f;
     }
 
     private void HandleSteering()
@@ -99,5 +110,5 @@ public class CarControls : MonoBehaviour
         WheelCollider.GetWorldPose(out position, out rotation);
         WheelTransform.rotation = rotation;
         WheelTransform.position = position;
-    }*/
+    }
 }

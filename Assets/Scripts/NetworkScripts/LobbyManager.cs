@@ -26,6 +26,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     private float _nextUpdateTime;
 
     public List<PlayerItem> playerItemsList = new List<PlayerItem>();
+    private Dictionary<string, GameObject> roomListEntries = new Dictionary<string, GameObject>();
     public PlayerItem playerItemPrefab;
     public Transform playerItemParent;
 
@@ -34,6 +35,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     public GameObject copyRoomNameButton;
 
     [SerializeField] private Toggle _isPrivateRoom;
+    string buff = "";
 
     private void Start()
     {
@@ -97,13 +99,18 @@ public class LobbyManager : MonoBehaviourPunCallbacks
         }
 
         roomItemsList.Clear();
+        roomListEntries.Clear();
 
         foreach (RoomInfo room in list)
         {
             RoomItem newRoom = Instantiate(roomItemPrefab, contentObject);
             newRoom.SetRoomName(room.Name);
             roomItemsList.Add(newRoom);
-                
+
+            // Добавляем запись в словарь
+            roomListEntries.Add(room.Name, newRoom.gameObject);
+            Debug.Log(roomListEntries);
+
             if (room.IsOpen)
             {
                 newRoom.gameObject.SetActive(true);
@@ -114,26 +121,53 @@ public class LobbyManager : MonoBehaviourPunCallbacks
             }
         }
     }
-    
+
     public void SearchRoomByName(string roomName)
     {
-        Debug.Log("SearchRoomByName");
-        
-        foreach (RoomItem item in roomItemsList)
+        if (string.IsNullOrEmpty(roomName))
         {
-            if (item.roomName.text != _roomSearchInput.text)
+            if (roomName.Equals(buff)) return;
+            else
             {
-                _warningsScripts.CantFindRoomWarning();
-                Debug.Log("CantFindRoomWarning");
-            }
-
-            else if (item.roomName.text == _roomSearchInput.text)
-            {
-                Debug.Log("Find!");
-                PhotonNetwork.JoinRoom(roomName);
-                break;
+                buff = roomName;
+                foreach (GameObject entry in roomListEntries.Values)
+                {
+                    entry.SetActive(true);
+                }
             }
         }
+        else
+        {
+            buff = roomName;
+            foreach (KeyValuePair<string, GameObject> keyValue in roomListEntries)
+            {
+                if (keyValue.Key.IndexOf(roomName) != -1)
+                    keyValue.Value.SetActive(true);
+                else
+                    keyValue.Value.SetActive(false);
+            }
+        }
+    
+
+
+
+    /*Debug.Log("SearchRoomByName");
+    
+    foreach (RoomItem item in roomItemsList)
+    {
+        if (item.roomName.text != _roomSearchInput.text)
+        {
+            _warningsScripts.CantFindRoomWarning();
+            Debug.Log("CantFindRoomWarning");
+        }
+
+        else if (item.roomName.text == _roomSearchInput.text)
+        {
+            Debug.Log("Find!");
+            PhotonNetwork.JoinRoom(roomName);
+            break;
+        }
+    }*/
         
     }
 

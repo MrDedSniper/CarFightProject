@@ -1,31 +1,37 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CameraFollowScript : MonoBehaviour
 {
-    [SerializeField] private Vector3 _offset;
-    [SerializeField] private Transform _target;
-    [SerializeField] private float _translateSpeed;
-    [SerializeField] private float _rotationSpeed;
+    public GameObject atachedVehicle;
+    public GameObject CameraFolder;
+    public Transform[] camLocations;
+    public int locationIndicator = 2;
+
+    //public controller controllerRef;
     
+    [Range(0, 1)] public float smoothTime = 0.5f;
+
+    private void Start()
+    {
+        atachedVehicle = GameObject.FindGameObjectWithTag("PlayerCar");
+        CameraFolder = atachedVehicle.transform.Find("Camera").gameObject;
+        camLocations = CameraFolder.GetComponentsInChildren<Transform>();
+
+        //controllerRef = atachedBVehicle.GetComponent<controller>();
+    }
+
     private void FixedUpdate()
     {
-        HandleTranslation();
-        HandleRotation();
-    }
-    
-    private void HandleTranslation()
-    {
-        var targetPosition = _target.TransformPoint(_offset);
-        transform.position = Vector3.Lerp(transform.position, targetPosition, _translateSpeed * Time.deltaTime);
-    }
-    
-    private void HandleRotation()
-    {
-        var direction = _target.position - transform.position;
-        var rotation = Quaternion.LookRotation(direction, Vector3.up);
-        transform.rotation = Quaternion.Lerp(transform.rotation, rotation, _rotationSpeed * Time.deltaTime);
+        if (Input.GetKeyDown(KeyCode.Tab))
+        {
+            if (locationIndicator >= 4 || locationIndicator < 2) locationIndicator = 2;
+            else locationIndicator++;
+        }
+
+        transform.position = camLocations[locationIndicator].position * (1 - smoothTime) +
+                             transform.position * smoothTime;
+        transform.LookAt(camLocations[1].transform);
+
+       // smoothTime = (controllerRef.KPH >= 150) ? Mathf.Abs((controllerRef.KPH / 150)) - 0.85f : 0.45f;
     }
 }
