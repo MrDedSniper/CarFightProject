@@ -11,6 +11,9 @@ GameObject:
   - component: {fileID: 7829844144317795725}
   - component: {fileID: 858013552540328544}
   - component: {fileID: 1594620606245342674}
+  - component: {fileID: 5535403667545736092}
+  - component: {fileID: 7087839072624524241}
+  - component: {fileID: 2727352638379544130}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -43,7 +46,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 1
-  m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
+  m_BackGroundColor: {r: 1, g: 1, b: 1, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -92,6 +95,49 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 43877144157353548}
   m_Enabled: 1
+--- !u!45 &5535403667545736092
+Skybox:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43877144157353548}
+  m_Enabled: 1
+  m_CustomSkybox: {fileID: 2100000, guid: 2ffc7a41e67d54f49977e9d5058e2cce, type: 2}
+--- !u!114 &7087839072624524241
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43877144157353548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 318c28e24828f3847b72697800960690, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2727352638379544130
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 43877144157353548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fa6476eaf473404408ec82fca69e8fe6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _directionalLight: {fileID: 0}
+  duration: 600
+  skyboxMaterial: {fileID: 2100000, guid: 2ffc7a41e67d54f49977e9d5058e2cce, type: 2}
+  exposureMin: 2.2
+  exposureMax: 3
+  intensityMin: 0
+  intensityMax: 0
+  exposureSpeed: 0.3
+  exposureRandomDelayMin: 0.1
+  exposureRandomDelayMax: 2
 --- !u!1 &460083236159403640
 GameObject:
   m_ObjectHideFlags: 0
@@ -947,8 +993,8 @@ MonoBehaviour:
   _frontRightWheelTransform: {fileID: 948405438201742482}
   _backLeftWheelTransform: {fileID: 9188640840458259854}
   _backRightWheelTransform: {fileID: 28636839611146925}
-  _motorForce: 500
-  _breakForce: 1000
+  _motorForce: 900
+  _breakForce: 2000
   _maxSteerAngle: 40
 --- !u!114 &3051009255358256710
 MonoBehaviour:

@@ -1,6 +1,7 @@
 using System;
 using UnityEngine;
 using System.Collections;
+using UnityEngine.Experimental.GlobalIllumination;
 
 public class CarControls : MonoBehaviour
 {
@@ -28,6 +29,9 @@ public class CarControls : MonoBehaviour
     [SerializeField] private float _motorForce;
     [SerializeField] private float _breakForce;
     [SerializeField] private float _maxSteerAngle;
+
+    [SerializeField] private Light _rearLeftLight;
+    [SerializeField] private Light _rearRightLight;
 
     internal float _currentSpeed;
     
@@ -57,6 +61,8 @@ public class CarControls : MonoBehaviour
     {
         _frontLeftWheelCollider.motorTorque = _verticalInput * _motorForce;
         _frontRightWheelCollider.motorTorque = _verticalInput * _motorForce;
+        _backLeftWheelCollider.motorTorque = _verticalInput * _motorForce;
+        _backRightWheelCollider.motorTorque = _verticalInput * _motorForce;
         
         _currentBreakForce = _isBreaking ? _breakForce : 0f;
 
@@ -75,8 +81,23 @@ public class CarControls : MonoBehaviour
     {
         _frontLeftWheelCollider.brakeTorque = _currentBreakForce;
         _frontRightWheelCollider.brakeTorque = _currentBreakForce;
-        _backLeftWheelCollider.brakeTorque = _currentBreakForce;
-        _backRightWheelCollider.brakeTorque = _currentBreakForce;
+
+        
+        float currentSteerAngle = _frontLeftWheelCollider.steerAngle;
+
+        
+        float newSteerAngle = Mathf.Lerp(currentSteerAngle, _maxSteerAngle * Mathf.Sign(_horizontalInput), Time.deltaTime * 2f);
+        _frontLeftWheelCollider.steerAngle = newSteerAngle;
+        _frontRightWheelCollider.steerAngle = newSteerAngle;
+
+        
+        Vector3 force = transform.forward * _motorForce * 0.5f;
+        GetComponent<Rigidbody>().AddForceAtPosition(force, transform.position + transform.forward * 2f);
+        GetComponent<Rigidbody>().AddTorque(transform.up * _motorForce * 0.1f * Mathf.Sign(_horizontalInput));
+        
+        // Включаем свет на объектах Point Light
+        _rearLeftLight.enabled = true;
+        _rearRightLight.enabled = true;
     }
     
     private void StopBreaking()
@@ -85,6 +106,10 @@ public class CarControls : MonoBehaviour
         _frontRightWheelCollider.brakeTorque = 0f;
         _backLeftWheelCollider.brakeTorque = 0f;
         _backRightWheelCollider.brakeTorque = 0f;
+        
+        // Вылючаем свет на объектах Point Light
+        _rearLeftLight.enabled = false;
+        _rearRightLight.enabled = false;
     }
 
     private void HandleSteering()

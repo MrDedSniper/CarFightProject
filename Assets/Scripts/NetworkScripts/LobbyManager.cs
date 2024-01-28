@@ -280,7 +280,7 @@ public class LobbyManager : MonoBehaviourPunCallbacks
     {
         if (!PhotonNetwork.CurrentRoom.IsOpen)
         {
-            PhotonNetwork.LoadLevel("Game");
+            PhotonNetwork.LoadLevel("FirstArena");
         }
     }
     

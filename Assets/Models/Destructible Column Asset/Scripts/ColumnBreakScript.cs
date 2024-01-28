@@ -5,15 +5,14 @@ using UnityEngine;
 public class ColumnBreakScript : MonoBehaviour
 {
 
-	[SerializeField] private CarControls _carControls;
+	//[SerializeField] private CarControls _carControls;
 	
 	public GameObject unbrokenColumn;
 	public GameObject brokenColumn;
 
 	//this determines whether the column will be broken or unbroken at the at runtime
 	public bool isBroken;
-
-
+	
 	void Start()
 	{
 		if (isBroken) 
